@@ -24,7 +24,7 @@ module bkusd::bkusd {
 
         let event_metadata_id = object::id(&metadata);
         transfer::public_freeze_object(metadata);
-        // transfer::public_share_object(metadata);
+
         let minter = Minter { id: object::new(ctx), cap: treasury };
         transfer::share_object(minter);
     }
