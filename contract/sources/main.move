@@ -25,7 +25,7 @@ module bkusd::main{
     const EDecimalGapTooLarge: u64 = 1001;
     const EZeroMintAmount: u64 = 1002;
 
-    // 热土豆：不能丢弃，也不能存储
+
     public struct RedeemTicket {
         vault_id: ID,
         payment: Coin<BKUSD>,
@@ -42,12 +42,7 @@ module bkusd::main{
     const FLASH_LOAN_FEE: u8 = 2;
     const BKUSD_DECIMAL:u8 = 6;
     const VERSION: u64 = 1;
-        // emit(Outcome {
-        //     gamenumber:0,
-        //     bonus:income,
-        //     coinvalue:coin_value,
-        //     result:first_num,
-        // });
+
     
     public struct Vault has key, store {
         id: UID,
@@ -73,7 +68,7 @@ module bkusd::main{
     }
 
 
-    //.......................................................................emit........................................
+
     public struct Add_coin_type has copy,drop {
         coin_type:TypeName,
     }
@@ -213,7 +208,7 @@ module bkusd::main{
 
         let coin_type = type_name::with_defining_ids<T>();
 
-        // 确认该币种已注册，且储存的值确实是 Balance<T>
+
         assert!(
             v.vault_coin.contains_with_type<TypeName, Balance<T>>(
                 coin_type
@@ -224,13 +219,13 @@ module bkusd::main{
         let dcl: u8 = *v.decimals_data.borrow(coin_type);
         let input_amount = coin.value();
 
-        // 将储备币最小单位换算成 BKUSD 最小单位
+
         let mint_amount: u64 = if (dcl == BKUSD_DECIMAL) {
             input_amount
         } else if (dcl > BKUSD_DECIMAL) {
             let diff: u8 = dcl - BKUSD_DECIMAL;
 
-            // 10^19 能放入 u64，10^20 则不能
+
             assert!(diff <= 19, EDecimalGapTooLarge);
 
             let gap = std::u64::pow(10u64, diff);
@@ -238,19 +233,19 @@ module bkusd::main{
         } else {
             let diff: u8 = BKUSD_DECIMAL - dcl;
             let gap = std::u64::pow(10u64, diff);
-            // 如果结果超出 u64，Move 会中止交易
+
             input_amount * gap
         };
 
         assert!(mint_amount > 0, EZeroMintAmount);
 
-        // 存入真实储备资产
+
         let bal_ref: &mut Balance<T> =
             v.vault_coin.borrow_mut(coin_type);
 
         coin::put(bal_ref, coin);
 
-        // 铸造对应数量的 BKUSD
+
         bkusd::mint(mint, mint_amount, ctx);
         emit(Minting_tokens {
             coin_type:coin_type,
@@ -261,7 +256,7 @@ module bkusd::main{
     }
 
 
-        // 第一步：开始赎回
+
     public fun retrieve_usd(
         coin: Coin<BKUSD>,
         mint: &Minter,
@@ -294,7 +289,7 @@ module bkusd::main{
         }
     }
 
-    // 第二步：提取一种储备币
+
     public fun retrieve_one<T>(
         v: &mut Vault,
         mut ticket: RedeemTicket,
@@ -307,7 +302,7 @@ module bkusd::main{
 
         let key = type_name::with_defining_ids<T>();
 
-        // 必须按照金库注册顺序提款
+
         let expected = *v.types.borrow(ticket.index);
         assert!(key == expected, EWrongType);
 
@@ -336,7 +331,7 @@ module bkusd::main{
         ticket
     }
 
-    // 第三步：全部提取完成，销毁 BKUSD
+
     public fun finish_retrieve(
         v: &mut Vault,
         mint: &mut Minter,
@@ -385,7 +380,7 @@ module bkusd::main{
         (coin::take(bian, amount, ctx),flr)
     }
 
-    //let Receipt {user, asset, amount, pool, fee_to_supplier, fee_to_treasury} = _receipt;
+
 
     public fun flash_loan_repay<T>(v:&mut Vault,_flr:Flash_loan_receipt<T>,mut coin:Coin<T>,ctx: &mut TxContext):Coin<T>{
         assert!(v.version==VERSION,EVersion);
