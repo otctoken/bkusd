@@ -1,5 +1,14 @@
 # Verification — 2026-11-10 (Asia/Singapore)
 
+## Update — 2026-11-11
+
+- English README and bilingual administration/security documentation updated.
+- Mainnet Policy `0x42f044a3805f943758572005a741304ef329c5667f195bee78bbebd2d40ea523` read on November 10: its embedded UpgradeCap references the configured BKUSD package and `temporize = 259200000` (three days). This is distinct from the six-day vault rollback in the supplied BKUSD source. No Move source was changed.
+- Wallet UI now renders discovered wallet names as React text and invokes dApp Kit connect/disconnect/account actions directly, with explicit pending and error feedback.
+- Production build and TypeScript checks passed. All 15 tests passed, including four DOM interaction tests covering named wallet selection, asynchronous disconnect, duplicate-click prevention, failure/retry feedback, Chinese labels, and empty discovery.
+- Production dependency audit reports zero known vulnerabilities.
+- Wallet regression tests use injected action fixtures; no real wallet permissions were revoked or mainnet transactions signed. These tests do not replace verification against the user's installed wallet extension.
+
 ## Passed
 
 - Strict TypeScript check (`npm run typecheck`).

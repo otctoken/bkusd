@@ -3,6 +3,7 @@ import { sui } from "../services/suiClient";
 export const dAppKit = createDAppKit({
   networks: ["mainnet"],
   createClient: () => sui,
+  slushWalletConfig: { appName: "BKUSD" },
 });
 declare module "@mysten/dapp-kit-react" {
   interface Register {

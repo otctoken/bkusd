@@ -35,7 +35,7 @@ export default function Docs() {
             ["mint", "Minting", "铸造"],
             ["redeem", "Redemption", "赎回"],
             ["flash", "Flash loans", "闪电贷"],
-            ["admin", "Governance", "管理机制"],
+            ["admin", "Administration & security", "管理与安全"],
             ["errors", "Error reference", "错误码"],
             ["contracts", "Contracts", "合约地址"],
           ].map(([id, en, zh]) => (
@@ -57,8 +57,8 @@ export default function Docs() {
             </h2>
             <p>
               {t(
-                "BKUSD is a six-decimal Sui asset backed by registered stablecoins. Deposits are converted at nominal 1:1 according to each asset’s registered precision. Redemption returns a proportional basket, not necessarily the original deposit asset.",
-                "BKUSD 是 Sui 上精度为 6 的代币，由已注册稳定币支持。存款根据各币种登记精度按名义 1:1 换算。赎回得到按比例分配的资产篮子，不一定是原先存入的币种。",
+                "BKUSD is a six-decimal Sui asset backed by registered stablecoins. Deposits are converted at nominal 1:1 according to each asset’s registered precision. Redemption returns a proportional basket, not necessarily the original deposit asset. Our reserve-selection policy is to support only stablecoins issued directly on Sui Network by established official issuers with strong institutional backing.",
+                "BKUSD 是 Sui 上精度为 6 的代币，由已注册稳定币支持。存款根据各币种登记精度按名义 1:1 换算。赎回得到按比例分配的资产篮子，不一定是原先存入的币种。我们的储备准入政策是：仅支持由具有强大背景的官方发行方直接在 Sui Network 发行的稳定币进行储备铸造。",
               )}
             </p>
             <div className="flow-diagram">
@@ -178,19 +178,51 @@ export default function Docs() {
           </section>
           <section id="admin">
             <span className="eyebrow">
-              05 / {t("ADMINISTRATION", "管理机制")}
+              05 / {t("ADMINISTRATION & SECURITY", "管理与安全")}
             </span>
-            <h2>{t("Capabilities and timelocks.", "能力凭证与时间锁。")}</h2>
+            <h2>{t("Administration and security.", "管理与安全。")}</h2>
             <p>
               {t(
-                "AdminCap authorizes reserve proposals, cancellation, addition after a strict three-day delay, and fee withdrawals. Decimals are supplied by the admin; this UI verifies CoinMetadata before proposing. TemporaryCap can register assets immediately. Its status here means ownership by the connected wallet, not global existence.",
-                "AdminCap 授权储备提案、取消、严格三天延迟后添加币种，以及手续费提取。精度由管理员提供，本界面提交前核对 CoinMetadata。TemporaryCap 可即时注册币种；界面所示状态仅表示当前钱包持有情况，不代表全局存在情况。",
+                "1. Protocol revenue comes only from flash-loan fees. Fees are stored separately from collateral reserves, and the administrator’s fee-withdrawal function cannot withdraw reserve principal. This protects the separation of user reserves and protocol income without guaranteeing immunity from all contract or asset risks.",
+                "1. 协议收入仅来自闪电贷手续费。手续费与储备金库分开存放，管理员的手续费提取接口不能提取储备本金，以保障用户储备与协议收入相互独立；这不代表合约或资产不存在任何风险。",
               )}
             </p>
+            <p>
+              {t(
+                "2. Standard proposals to add a stablecoin have a three-day timelock. This gives users time to review the proposed asset and protocol safety, and decide whether to redeem their funds. During initialization, a retained TemporaryCap can register assets without this delay.",
+                "2. 协议通过常规提案添加新的稳定币时，有三天时间锁，让用户有足够时间审查新资产与协议的安全性，并根据情况自行决定是否赎回资金。初始化阶段保留的 TemporaryCap 可绕过这一添加等待期。",
+              )}
+            </p>
+            <p>
+              {t(
+                "3. The verified mainnet upgrade Policy has a three-day security timelock. Users can review the upgrade proposal and the upgraded contract. To recover from an unfinished version transition, the BKUSD contract provides a separate public rollback: after its six-day version timer expires, users can execute the permitted rollback and continue using the compatible old package.",
+                "3. 已核实的主网升级 Policy 设有三天安全时间锁，用户可以审查升级提案及升级后的合约。为避免管理员未完成版本切换导致协议持续不可用，BKUSD 合约提供独立的公开回退机制：六天版本等待期结束后，用户可执行允许的回退，并继续使用兼容的旧版合约。",
+              )}
+            </p>
+            <p>
+              <a
+                className="text-button"
+                href="https://github.com/otctoken/Sui-Move-contract-upgrade-delayed"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t(
+                  "Review the upgrade policy source ↗",
+                  "审查升级时间锁源码 ↗",
+                )}
+              </a>
+            </p>
+            <div className="contract-row">
+              <strong>Policy</strong>
+              <ObjectLink
+                id="0x42f044a3805f943758572005a741304ef329c5667f195bee78bbebd2d40ea523"
+                full
+              />
+            </div>
             <p className="notice">
               {t(
-                "Version change immediately increments the vault version and starts a six-day rollback timer. User operations require version 1 in this package. Disabling rollback only works when vault.version equals compiled VERSION. After the delay anyone may call public_automatic_version_downgrading.",
-                "版本切换立即递增金库版本并启动六天回退计时。此合约的用户操作要求版本为 1。禁止回退仅在金库版本等于编译版本时生效。等待期结束后任何人均可调用 public_automatic_version_downgrading。",
+                "Verified November 10, 2026: this Policy holds the BKUSD UpgradeCap and its upgrade delay is 259200000 ms (3 days). The vault’s rollback timer is 518400000 ms (6 days), separate from the upgrade delay. Version scheduling immediately increments the vault version; rollback requires chain time strictly after its deadline. The upgrade Policy also allows UpgradeCap recovery after a separate ten-day wait.",
+                "2026 年 11 月 10 日核实：此 Policy 持有 BKUSD UpgradeCap，升级延迟为 259200000 毫秒（三天）。金库回退计时为 518400000 毫秒（六天），与升级锁独立。发起版本切换会立即增加金库版本，回退需链上时间严格超过截止时间。升级 Policy 另有经过十天等待取回 UpgradeCap 的路径。",
               )}
             </p>
           </section>

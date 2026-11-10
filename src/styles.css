@@ -1,5 +1,111 @@
 @import "tailwindcss";
 
+.wallet-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #a9e7c4;
+  color: #0e3025;
+  padding: 11px 14px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.wallet-trigger img {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+}
+.wallet-dialog {
+  margin: auto;
+  position: fixed;
+  inset: 0;
+  width: min(440px, calc(100vw - 32px));
+  max-height: 85dvh;
+  overflow: auto;
+  color: #eaf2ed;
+  background: #112b22;
+  border: 1px solid #86b79838;
+  border-radius: 14px;
+  padding: 30px;
+  box-shadow: 0 30px 100px #0008;
+}
+.wallet-dialog::backdrop {
+  background: #020d0bd9;
+  backdrop-filter: blur(7px);
+}
+.wallet-dialog h2 {
+  padding-right: 20px;
+}
+.wallet-subtitle {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 12px 0 22px;
+}
+.wallet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.wallet-list button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  border: 1px solid #86b79830;
+  background: #17372c;
+  color: #eaf2ed;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: left;
+}
+.wallet-list button:hover:not(:disabled) {
+  background: #214b3c;
+}
+.wallet-list button span {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+.wallet-list img,
+.wallet-current img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 7px;
+}
+.wallet-help {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 22px;
+}
+.wallet-help a {
+  color: var(--mint);
+}
+.wallet-current {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 20px 0;
+}
+.wallet-current div {
+  min-width: 0;
+}
+.wallet-current strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.wallet-current code {
+  font-size: 10px;
+  word-break: break-all;
+  color: var(--muted);
+}
+.wallet-disconnect {
+  margin-top: 20px;
+}
+
 mysten-dapp-kit-connect-button {
   --primary: #a9e7c4;
   --primary-foreground: #0e3025;
