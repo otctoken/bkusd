@@ -156,8 +156,8 @@ export default function Docs() {
             </p>
             <p>
               {t(
-                "All steps are in a single Transaction PTB, with one wallet signature. On failure all asset changes revert; gas may still be charged. Independent floors can leave dust in the vault.",
-                "所有步骤置于同一个 Transaction PTB，只需一次钱包签名。失败时全部资产变动回滚，但可能收取 Gas。各币种分别取整可能在金库留下余量。",
+                "All steps are in a single Transaction PTB, with one wallet signature. On failure all asset changes revert; gas may still be charged.",
+                "所有步骤置于同一个 Transaction PTB，只需一次钱包签名。失败时全部资产变动回滚，但可能收取 Gas。",
               )}
             </p>
           </section>
