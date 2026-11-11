@@ -55,7 +55,7 @@ export default function FlashLoan() {
         </div>
         <div className="panel">
           <span className="eyebrow">{t("MINIMUM BORROW", "最低借款")}</span>
-          <h2>100000</h2>
+          <h2>100000 Base unit</h2>
           <p>
             {t(
               "Repay the principal and service fees within the same PTB.",
