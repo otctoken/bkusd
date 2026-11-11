@@ -371,8 +371,8 @@ export function TradeForm({ mode }: { mode: "mint" | "redeem" | "flash" }) {
           <p>
             {mode === "redeem"
               ? t(
-                  "Outputs round down per asset. No on-chain minimum output is available. A failed transaction rolls back all withdrawals; gas may still be charged.",
-                  "每种资产的输出向下取整，合约没有链上最低输出保护。失败时全部提款回滚，但仍可能收取 Gas。",
+                  "In the event of a failure, all transactions are rolled back, but gas fees may still be charged.",
+                  "失败时全部交易回滚，但仍可能收取 Gas。",
                 )
               : mode === "mint"
                 ? t(
