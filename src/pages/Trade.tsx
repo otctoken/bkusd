@@ -376,8 +376,8 @@ export function TradeForm({ mode }: { mode: "mint" | "redeem" | "flash" }) {
                 )
               : mode === "mint"
                 ? t(
-                    "Extra precision is truncated. The full deposit enters the vault, including any rounding remainder.",
-                    "超出精度的部分向下取整，全部存入金额（包括舍入余量）进入金库。",
+                    "Deposit the entire amount into the vault.",
+                    "全部存入金额进入金库。",
                   )
                 : t(
                     "Borrow and repay must stay in the same PTB. Fee = floor(amount / 10,000) × 2 base units.",
