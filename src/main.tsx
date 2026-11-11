@@ -67,6 +67,22 @@ function App() {
             GitHub ↗
           </a>
           <span>Sui Mainnet</span>
+          <a
+            href="https://x.com/SuiSgGame"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="BKUSD on X"
+          >
+            X ↗
+          </a>
+          <a
+            href="https://t.me/Sui_Nav"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="BKUSD on Telegram"
+          >
+            Telegram ↗
+          </a>
         </div>
       </footer>
     </>

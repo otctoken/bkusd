@@ -66,8 +66,8 @@ export function TransactionModal({
           <>
             <p className="notice">
               {t(
-                "Simulation passed. Outputs may change before execution. No on-chain minimum-output protection. Review expires in 60 seconds.",
-                "模拟通过。执行前输出可能变化，合约没有最低输出保护。此预览 60 秒后过期。",
+                "Simulation passed; gas is an estimate, not a wallet funding check. Your wallet or SDK calculates gas automatically when signing. Outputs may change before execution; no on-chain minimum-output protection. Review expires in 60 seconds.",
+                "模拟通过；Gas 仅为估算，不代表已验证钱包 Gas 余额。签名时由钱包或 SDK 自动计算 Gas。执行前输出可能变化，合约没有最低输出保护。此预览 60 秒后过期。",
               )}
             </p>
             <button className="primary full" onClick={confirm}>

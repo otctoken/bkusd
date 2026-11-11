@@ -124,7 +124,7 @@ export function AssetList({ assets }: { assets: Asset[] }) {
     0n,
   );
   return (
-    <div className="table-scroll">
+    <div className="table-scroll asset-list">
       <table>
         <thead>
           <tr>
@@ -147,11 +147,16 @@ export function AssetList({ assets }: { assets: Asset[] }) {
                   </div>
                 </div>
               </td>
-              <td className="number">
-                {formatAmount(a.reserve, a.decimals)}
-                <small>{a.symbol}</small>
+              <td
+                className="number"
+                data-label={t("Available reserve", "可用储备")}
+              >
+                <div>
+                  {formatAmount(a.reserve, a.decimals)}
+                  <small>{a.symbol}</small>
+                </div>
               </td>
-              <td>
+              <td data-label={t("Composition", "占比")}>
                 <div className="composition">
                   <span>
                     {percentage(
@@ -170,8 +175,10 @@ export function AssetList({ assets }: { assets: Asset[] }) {
                   </i>
                 </div>
               </td>
-              <td>{a.decimals}</td>
-              <td>
+              <td data-label={t("Precision", "精度")}>
+                <span>{a.decimals}</span>
+              </td>
+              <td data-label={t("Move type", "Move 类型")}>
                 <span title={a.type} className="mono">
                   {shortId(a.type.split("::")[0])}::
                   {a.type.split("::").slice(1).join("::")}

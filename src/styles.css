@@ -139,7 +139,7 @@ mysten-dapp-kit-connect-button::part(trigger) {
 body {
   margin: 0;
   background: radial-gradient(ellipse at 76% 13%, #15473a36, transparent 38%);
-  min-width: 340px;
+  min-width: 0;
 }
 button,
 input,
@@ -1861,5 +1861,152 @@ footer > div {
   *:after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Keep intrinsic table/text widths inside the viewport, including narrow phones. */
+#root,
+main,
+.hero > *,
+.trade-layout > *,
+.docs-layout > * {
+  min-width: 0;
+}
+.hero-art {
+  overflow: clip;
+}
+footer {
+  flex-wrap: wrap;
+  gap: 18px;
+}
+footer > div {
+  flex-wrap: wrap;
+  gap: 14px 20px;
+}
+.asset-list table {
+  min-width: 620px;
+}
+.asset-list .token-cell > div {
+  min-width: 0;
+}
+@media (max-width: 760px) {
+  .hero-actions,
+  .hero-proof,
+  .panel-foot > span {
+    flex-wrap: wrap;
+  }
+  .hero h1 {
+    font-size: clamp(44px, 12vw, 67px);
+  }
+  .asset-list table,
+  .asset-list tbody {
+    display: block;
+    min-width: 0;
+    width: 100%;
+  }
+  .asset-list thead {
+    display: none;
+  }
+  .asset-list tr {
+    display: block;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .asset-list td,
+  .asset-list td:first-child,
+  .asset-list td:last-child {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+    gap: 12px;
+    align-items: start;
+    padding: 9px 0;
+    border: 0;
+    width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+  .asset-list td:first-child {
+    display: block;
+    padding: 0 0 12px;
+  }
+  .asset-list td[data-label]::before {
+    content: attr(data-label);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .asset-list td > * {
+    min-width: 0;
+  }
+  .asset-list td:not(:first-child) > * {
+    text-align: right;
+    justify-self: stretch;
+  }
+  .asset-list .token-cell {
+    white-space: normal;
+  }
+  .asset-list .composition i {
+    margin-left: auto;
+  }
+  .asset-list .mono {
+    word-break: break-all;
+  }
+  .detail-row {
+    flex-wrap: wrap;
+    overflow-wrap: anywhere;
+  }
+  .amount-input-row {
+    gap: 8px;
+  }
+  .amount-input-row > input {
+    min-width: 0;
+  }
+  .redemption-row {
+    flex-wrap: wrap;
+  }
+  .redemption-row > div {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .redemption-row > b {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+}
+@media (max-width: 480px) {
+  .navbar {
+    position: relative;
+    height: auto;
+    min-height: 74px;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    gap: 14px;
+  }
+  .nav-actions {
+    width: 100%;
+    margin: 0;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .navbar nav.open {
+    top: 100%;
+  }
+  main {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  footer {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+  .overview-grid .reserve-chart {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .section-heading {
+    flex-wrap: wrap;
+  }
+  .contract-row {
+    flex-wrap: wrap;
   }
 }

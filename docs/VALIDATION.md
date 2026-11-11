@@ -2,6 +2,15 @@
 
 ## Update — 2026-11-11
 
+### Gas preview and mobile layout follow-up
+
+- Removed the incorrect rejection of successful simulations with `gasPaymentMocked`. Mock gas describes the simulation mode and does not establish that the wallet lacks SUI. Contract execution failures still block signing.
+- Simulations operate on a `Transaction.from` copy. The signing PTB does not specify gas budget, price, or payment; SDK/wallet resolution remains automatic. Gas shown in the preview is an estimate, not a funding check.
+- Added a regression test for unset signing gas configuration and isolation from changes to the simulation copy.
+- On narrow screens, the reserve table becomes labeled asset cards. Intrinsic grid widths, decorative overflow, narrow navigation, footer wrapping, and long amounts/types have explicit responsive handling.
+- Added the requested X and Telegram footer links.
+- Real-device layout and funded-wallet execution remain unverified; no browser automation tool was available for this follow-up.
+
 - English README and bilingual administration/security documentation updated.
 - Mainnet Policy `0x42f044a3805f943758572005a741304ef329c5667f195bee78bbebd2d40ea523` read on November 10: its embedded UpgradeCap references the configured BKUSD package and `temporize = 259200000` (three days). This is distinct from the six-day vault rollback in the supplied BKUSD source. No Move source was changed.
 - Wallet UI now renders discovered wallet names as React text and invokes dApp Kit connect/disconnect/account actions directly, with explicit pending and error feedback.

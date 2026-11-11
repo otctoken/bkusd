@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useDAppKit, useCurrentAccount } from "@mysten/dapp-kit-react";
 import { useQueryClient } from "@tanstack/react-query";
-import type { Transaction } from "@mysten/sui/transactions";
+import { Transaction } from "@mysten/sui/transactions";
 import { sui } from "../services/suiClient";
 import { decodeEvent, type DecodedEvent } from "../services/events";
 import { executionError, errorText } from "../utils/errors";
@@ -42,15 +42,14 @@ export function useTransaction() {
       const owner = account.address;
       const tx = await build();
       const r = await sui.simulateTransaction({
-        transaction: tx,
+        // Simulate a copy so preview resolution cannot pin gas on the signing PTB.
+        transaction: Transaction.from(tx),
         include: { effects: true, events: true },
       });
       if (r.FailedTransaction)
         throw executionError(r.FailedTransaction.status.error!);
-      if (r.gasPaymentMocked)
-        throw new Error(
-          "Simulation used mocked gas; fund your wallet with SUI / 请先存入 SUI 支付 Gas",
-        );
+      // Mock gas is a normal simulation mode, not evidence of insufficient SUI.
+      // The unbuilt signing transaction leaves budget, price and payment to the SDK/wallet.
       const g = r.Transaction.effects.gasUsed;
       const gas =
         BigInt(g.computationCost) +

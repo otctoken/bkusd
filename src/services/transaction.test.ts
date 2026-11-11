@@ -10,6 +10,20 @@ const types = [
   "0x" + "a".repeat(64) + "::asset::A",
   "0x" + "b".repeat(64) + "::asset::B",
 ];
+test("signing PTB leaves gas to SDK and is isolated from simulation resolution", () => {
+  const tx = buildAdminTransaction(sender, cap, "change_add_version_delay");
+  assert.equal(tx.getData().gasData.budget, null);
+  assert.equal(tx.getData().gasData.price, null);
+  assert.equal(tx.getData().gasData.payment, null);
+  const simulation = Transaction.from(tx);
+  // Emulate SDK resolution on the copy; these are test values, not app defaults.
+  simulation.setGasBudget(1000000);
+  simulation.setGasPrice(1000);
+  simulation.setGasPayment([]);
+  assert.equal(tx.getData().gasData.budget, null);
+  assert.equal(tx.getData().gasData.price, null);
+  assert.equal(tx.getData().gasData.payment, null);
+});
 test("redemption is one PTB, visits every type in order, consumes successor tickets", () => {
   const tx = new Transaction();
   appendRedeem(tx, tx.object(coin), types);
