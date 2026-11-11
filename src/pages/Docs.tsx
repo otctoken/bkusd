@@ -156,8 +156,8 @@ export default function Docs() {
             </p>
             <p>
               {t(
-                "All steps are in a single Transaction PTB, with one wallet signature. On failure all asset changes revert; gas may still be charged. Independent floors can leave dust in the vault. No minimum-output or slippage argument exists in this contract.",
-                "所有步骤置于同一个 Transaction PTB，只需一次钱包签名。失败时全部资产变动回滚，但可能收取 Gas。各币种分别取整可能在金库留下余量。合约没有最低输出或滑点参数。",
+                "All steps are in a single Transaction PTB, with one wallet signature. On failure all asset changes revert; gas may still be charged. Independent floors can leave dust in the vault.",
+                "所有步骤置于同一个 Transaction PTB，只需一次钱包签名。失败时全部资产变动回滚，但可能收取 Gas。各币种分别取整可能在金库留下余量。",
               )}
             </p>
           </section>
@@ -183,20 +183,20 @@ export default function Docs() {
             <h2>{t("Administration and security.", "管理与安全。")}</h2>
             <p>
               {t(
-                "1. Protocol revenue comes only from flash-loan fees. Fees are stored separately from collateral reserves, and the administrator’s fee-withdrawal function cannot withdraw reserve principal. This protects the separation of user reserves and protocol income without guaranteeing immunity from all contract or asset risks.",
-                "1. 协议收入仅来自闪电贷手续费。手续费与储备金库分开存放，管理员的手续费提取接口不能提取储备本金，以保障用户储备与协议收入相互独立；这不代表合约或资产不存在任何风险。",
+                "1. Protocol revenue is derived solely from flash loan fees. These fees are set aside within the vault; the administrator’s fee-withdrawal interface cannot access the principal, ensuring that user withdrawals and protocol revenue remain independent of each other.",
+                "1. 协议收入仅来自闪电贷手续费。手续费与储备金库分开存放，管理员的手续费提取接口不能提取储备本金，以保障用户储备与协议收入相互独立。",
               )}
             </p>
             <p>
               {t(
-                "2. Standard proposals to add a stablecoin have a three-day timelock. This gives users time to review the proposed asset and protocol safety, and decide whether to redeem their funds. During initialization, a retained TemporaryCap can register assets without this delay.",
-                "2. 协议通过常规提案添加新的稳定币时，有三天时间锁，让用户有足够时间审查新资产与协议的安全性，并根据情况自行决定是否赎回资金。初始化阶段保留的 TemporaryCap 可绕过这一添加等待期。",
+                "2. Standard proposals to add a stablecoin have a three-day timelock. This gives users time to review the proposed asset and protocol safety, and decide whether to redeem their funds. During initialization.",
+                "2. 协议通过常规提案添加新的稳定币时，有三天时间锁，让用户有足够时间审查新资产与协议的安全性，并根据情况自行决定是否赎回资金。",
               )}
             </p>
             <p>
               {t(
                 "3. The verified mainnet upgrade Policy has a three-day security timelock. Users can review the upgrade proposal and the upgraded contract. To recover from an unfinished version transition, the BKUSD contract provides a separate public rollback: after its six-day version timer expires, users can execute the permitted rollback and continue using the compatible old package.",
-                "3. 已核实的主网升级 Policy 设有三天安全时间锁，用户可以审查升级提案及升级后的合约。为避免管理员未完成版本切换导致协议持续不可用，BKUSD 合约提供独立的公开回退机制：六天版本等待期结束后，用户可执行允许的回退，并继续使用兼容的旧版合约。",
+                "3. 主网升级 Policy 设有三天安全时间锁，用户可以审查升级提案及升级后的合约。为避免管理员未完成版本切换导致协议持续不可用，BKUSD 合约提供独立的公开回退机制：六天版本等待期结束后，用户可执行允许的回退，并继续使用兼容的旧版合约。",
               )}
             </p>
             <p>
@@ -221,8 +221,8 @@ export default function Docs() {
             </div>
             <p className="notice">
               {t(
-                "Verified November 10, 2026: this Policy holds the BKUSD UpgradeCap and its upgrade delay is 259200000 ms (3 days). The vault’s rollback timer is 518400000 ms (6 days), separate from the upgrade delay. Version scheduling immediately increments the vault version; rollback requires chain time strictly after its deadline. The upgrade Policy also allows UpgradeCap recovery after a separate ten-day wait.",
-                "2026 年 11 月 10 日核实：此 Policy 持有 BKUSD UpgradeCap，升级延迟为 259200000 毫秒（三天）。金库回退计时为 518400000 毫秒（六天），与升级锁独立。发起版本切换会立即增加金库版本，回退需链上时间严格超过截止时间。升级 Policy 另有经过十天等待取回 UpgradeCap 的路径。",
+                "this Policy holds the BKUSD UpgradeCap and its upgrade delay is 259200000 ms (3 days). The vault’s rollback timer is 518400000 ms (6 days), separate from the upgrade delay. Version scheduling immediately increments the vault version; rollback requires chain time strictly after its deadline. The upgrade Policy also allows UpgradeCap recovery after a separate ten-day wait.",
+                "此 Policy 持有 BKUSD UpgradeCap，升级延迟为 259200000 毫秒（三天）。金库回退计时为 518400000 毫秒（六天），与升级锁独立。发起版本切换会立即增加金库版本，回退需链上时间严格超过截止时间。升级 Policy 另有经过十天等待取回 UpgradeCap 的路径。",
               )}
             </p>
           </section>

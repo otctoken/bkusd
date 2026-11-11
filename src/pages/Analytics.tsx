@@ -73,8 +73,8 @@ export default function Analytics() {
         eyebrow={t("ON-CHAIN INTELLIGENCE", "链上数据")}
         title={t("See the whole picture.", "看见完整储备。")}
         description={t(
-          "Real protocol events, queried through Sui GraphQL. No synthetic history.",
-          "通过 Sui GraphQL 查询真实协议事件，不生成虚构历史。",
+          "Real protocol events, queried through Sui GraphQL.",
+          "通过 Sui GraphQL 查询真实协议事件。",
         )}
       />
       {q.error && <ErrorBox error={q.error} retry={() => q.refetch()} />}

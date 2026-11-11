@@ -45,21 +45,21 @@ export default function FlashLoan() {
       <div className="flash-intro">
         <div className="panel">
           <span className="eyebrow">{t("PROTOCOL FEE", "协议手续费")}</span>
-          <h2>2 / 10,000</h2>
+          <h2>0.02%</h2>
           <p>
             {t(
-              "Integer division first. Fees accumulate separately from backing reserves.",
-              "先整数除法，再乘以 2。手续费独立于储备资产累积。",
+              "Transaction fees are separate from the accumulation of reserve assets.",
+              "手续费独立于储备资产累积。",
             )}
           </p>
         </div>
         <div className="panel">
           <span className="eyebrow">{t("MINIMUM BORROW", "最低借款")}</span>
-          <h2>100,000</h2>
+          <h2>100000 Base unit</h2>
           <p>
             {t(
-              "Base units of the selected asset. Repay principal plus fee in the same PTB.",
-              "所选资产的最小单位。在同一 PTB 内归还本金和手续费。",
+              "Repay the principal and service fees within the same PTB.",
+              "在同一 PTB 内归还本金和手续费。",
             )}
           </p>
         </div>
