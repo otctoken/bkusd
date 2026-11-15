@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/seo-config.mjs && tsc -b && vite build && node scripts/seo-build.mjs",
     "typecheck": "tsc -b",
     "test": "node --import tsx --test src/utils/amount.test.ts src/services/transaction.test.ts src/components/WalletControl.test.tsx",
     "preview": "vite preview --host 0.0.0.0",
-    "verify:chain": "tsx scripts/verify-chain.ts"
+    "verify:chain": "tsx scripts/verify-chain.ts",
+    "check:seo": "node scripts/seo-build.mjs --check"
   },
   "dependencies": {
     "@mysten/dapp-kit-react": "latest",

@@ -1,1 +1,38 @@
-{ "rewrites": [{ "source": "/((?!assets/).*)", "destination": "/index.html" }] }
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "routes": [
+    {
+      "src": "/[mM][iI][nN][tT]/?",
+      "dest": "/mint/index.html"
+    },
+    {
+      "src": "/[rR][eE][dD][eE][eE][mM]/?",
+      "dest": "/redeem/index.html"
+    },
+    {
+      "src": "/[fF][lL][aA][sS][hH]\\-[lL][oO][aA][nN]/?",
+      "dest": "/flash-loan/index.html"
+    },
+    {
+      "src": "/[aA][nN][aA][lL][yY][tT][iI][cC][sS]/?",
+      "dest": "/analytics/index.html"
+    },
+    {
+      "src": "/[dD][oO][cC][sS]/?",
+      "dest": "/docs/index.html"
+    },
+    {
+      "src": "/[aA][dD][mM][iI][nN]/?",
+      "dest": "/admin/index.html"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/404.html",
+      "status": 404
+    }
+  ]
+}
