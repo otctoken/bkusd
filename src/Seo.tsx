@@ -33,20 +33,8 @@ export default function Seo() {
     document.getElementById('seo-schema')?.remove();
     if (page) {
       const schema = document.createElement('script'); schema.id = 'seo-schema'; schema.type = 'application/ld+json';
-      schema.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url: config.origin + page.path });
+      schema.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': page.path === '/' ? 'WebSite' : 'WebPage', name: title, description, url: config.origin + page.path, inLanguage: config.lang });
       document.head.appendChild(schema);
-    }
-    let section = document.getElementById('seo-content');
-    if (!section) { section = document.createElement('section'); section.id = 'seo-content'; document.body.appendChild(section); }
-    section.replaceChildren();
-    if (page) {
-      section.setAttribute('aria-label', 'About this page');
-      section.style.cssText = 'max-width:72rem;margin:2rem auto;padding:1.5rem;line-height:1.7;font:inherit';
-      const heading = document.createElement('h2'); heading.textContent = page.title; section.appendChild(heading);
-      for (const text of page.paragraphs) { const p = document.createElement('p'); p.textContent = text; section.appendChild(p); }
-      const nav = document.createElement('nav'); nav.setAttribute('aria-label', 'Explore ' + config.name);
-      for (const item of config.pages) { const a = document.createElement('a'); a.href = item.path; a.textContent = item.title; a.style.marginRight = '1rem'; nav.appendChild(a); }
-      section.appendChild(nav);
     }
   }, [pathname]);
   return null;

@@ -12,11 +12,11 @@ if (config.origin === 'https://nav.dappnav.org') {
   for (const category of directory.categories) config.pages.push({path:'/categories/'+category.toLowerCase().replace(/[^a-z0-9]+/g,'-'), title:`Sui ${category} Projects | DappNav`, description:`Explore ${category} projects in the Sui ecosystem, with project descriptions and website links from the DappNav directory.`, paragraphs:[`Browse Sui ${category} projects below. Return to the interactive directory to search across all categories. Listings are discovery resources, not endorsements.`], category});
 }
 const file = path => path === '/' ? 'dist/index.html' : `dist${path}/index.html`;
-const content = page => `<section id="seo-content" aria-label="About this page" style="max-width:72rem;margin:2rem auto;padding:1.5rem;line-height:1.7"><h2>${esc(page.title)}</h2>${page.paragraphs.map(p => `<p>${esc(p)}</p>`).join('')}<nav aria-label="Explore ${esc(config.name)}">${config.pages.map(p => `<a style="margin-right:1rem" href="${esc(p.path)}">${esc(p.title)}</a>`).join(' ')}</nav></section>`;
 
 if (!process.argv.includes('--check')) {
   let template = await readFile('dist/index.html', 'utf8');
   template = template.replace(/<title>[\s\S]*?<\/title>/gi, '').replace(/<meta\b(?=[^>]*(?:name=["'](?:description|robots|twitter:[^"']+)["']|property=["']og:[^"']+["']))[^>]*>/gi, '').replace(/<link\b(?=[^>]*rel=["']canonical["'])[^>]*>/gi, '');
+  template = template.replace(/<html\b[^>]*>/i, tag => tag.replace(/\s+lang=["'][^"']*["']/i, '').replace('<html', `<html lang="${esc(config.lang)}"`));
   // Rebuilding starts from the original Vite/static build, never the prior SEO output.
   let catalog = '';
   if (config.origin === 'https://nav.dappnav.org') {
@@ -35,7 +35,7 @@ if (!process.argv.includes('--check')) {
   }
   const render = (page, index = true, canonicalPath = page.path) => {
     const url = config.origin + canonicalPath;
-    const head = `<title>${esc(page.title)}</title>\n<meta name="description" content="${esc(page.description)}">\n<meta name="robots" content="${index ? 'index, follow, max-image-preview:large' : 'noindex, follow'}">\n${index ? `<link rel="canonical" href="${esc(url)}">` : ''}\n<meta property="og:type" content="website">\n<meta property="og:site_name" content="${esc(config.name)}">\n<meta property="og:title" content="${esc(page.title)}">\n<meta property="og:description" content="${esc(page.description)}">\n${index ? `<meta property="og:url" content="${esc(url)}">` : ''}\n<meta name="twitter:card" content="summary">\n<meta name="twitter:title" content="${esc(page.title)}">\n<meta name="twitter:description" content="${esc(page.description)}">\n${config.image ? `<meta property="og:image" content="${config.origin}${config.image}"><meta name="twitter:image" content="${config.origin}${config.image}">` : ''}\n${index ? `<script id="seo-schema" type="application/ld+json">${json({'@context':'https://schema.org','@type':page.path === '/' ? 'WebSite' : 'WebPage',name:page.title,description:page.description,url,inLanguage:config.lang})}</script>` : ''}`;
+    const head = `<title>${esc(page.title)}</title>\n<meta name="description" content="${esc(page.description)}">\n<meta name="robots" content="${index ? 'index, follow, max-image-preview:large' : 'noindex, follow'}">\n${index ? `<link rel="canonical" href="${esc(url)}">` : ''}\n<meta property="og:type" content="website">\n<meta property="og:site_name" content="${esc(config.name)}">\n<meta property="og:title" content="${esc(page.title)}">\n<meta property="og:description" content="${esc(page.description)}">\n${index ? `<meta property="og:url" content="${esc(url)}">` : ''}\n<meta name="twitter:card" content="summary">\n<meta name="twitter:title" content="${esc(page.title)}">\n<meta name="twitter:description" content="${esc(page.description)}">\n${config.image ? `<meta property="og:image" content="${config.origin}${config.image}"><meta name="twitter:image" content="${config.origin}${config.image}"><meta property="og:image:alt" content="${esc(config.name)}"><meta name="twitter:image:alt" content="${esc(config.name)}">` : ''}\n${index ? `<script id="seo-schema" type="application/ld+json">${json({'@context':'https://schema.org','@type':page.path === '/' ? 'WebSite' : 'WebPage',name:page.title,description:page.description,url,inLanguage:config.lang})}</script>` : ''}`;
     let base = template;
     if (page.category) {
       // Static category pages keep the complete catalog visible without JS or wallet providers.
@@ -43,7 +43,7 @@ if (!process.argv.includes('--check')) {
       const listing = `<main style="max-width:72rem;margin:auto;padding:2rem"><h1>${esc(page.title)}</h1><a href="/">Search all Sui projects</a><ul>${entries.map(p=>`<li><h2><a href="${esc(new URL(p.url).href)}" rel="noopener noreferrer">${esc(p.name)}</a></h2><p>${esc(p.description)}</p></li>`).join('')}</ul></main>`;
       base = base.replace(/<script\b[^>]*type="module"[^>]*>[\s\S]*?<\/script>/g,'').replace(/<div id="root">[\s\S]*<\/div>\s*(?=<\/body>)/,`<div id="root">${listing}</div>\n`);
     }
-    return base.replace('</head>', head + '\n</head>').replace('</body>', (index ? content(page) : '') + '\n</body>');
+    return base.replace('</head>', head + '\n</head>');
   };
   for (const page of config.pages) {
     const target = file(page.path); await mkdir(target.slice(0,target.lastIndexOf('/')), {recursive:true}); await writeFile(target, render(page));
@@ -62,14 +62,24 @@ for (const page of config.pages) {
   assert.equal((html.match(/<title>/g)||[]).length,1);
   assert.equal((html.match(/rel="canonical"/g)||[]).length,1);
   assert(html.includes(`href="${esc(config.origin+page.path)}"`));
-  assert(html.includes(esc(page.description)) && html.includes('id="seo-content"'));
+  assert(html.includes(esc(page.description)));
+  assert(!html.includes('id="seo-content"'), 'Do not append an SEO footer to the application');
+  assert(html.includes(`<html lang="${esc(config.lang)}"`));
   assert(!html.includes('noindex'));
   for (const match of html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs)) JSON.parse(match[1]);
   for (const match of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)"/g)) await access('dist'+match[1]);
 }
 assert((await readFile('dist/404.html','utf8')).includes('noindex, follow'));
 const sitemap = await readFile('dist/sitemap.xml','utf8');
-assert.equal((sitemap.match(/<loc>/g)||[]).length,config.pages.length);
+const expectedUrls = config.pages.map(page => config.origin + page.path);
+assert.equal(new Set(expectedUrls).size, expectedUrls.length, 'Public URLs must be unique');
+assert.deepEqual([...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]), expectedUrls.map(esc));
+for (const [alias, canonical] of Object.entries(config.aliases)) {
+  const html = await readFile(file(alias), 'utf8');
+  assert(html.includes(`rel="canonical" href="${esc(config.origin + canonical)}"`));
+  assert(!html.includes('noindex') && !html.includes('id="seo-content"'));
+}
+if (config.image) await access('dist' + config.image);
 for (const path of config.private) { assert(!sitemap.includes(`<loc>${config.origin}${path}</loc>`)); assert((await readFile(file(path),'utf8')).includes('noindex, follow')); }
 assert((await readFile('dist/robots.txt','utf8')).includes(config.origin+'/sitemap.xml'));
-console.log(`SEO verified: ${config.name}, ${config.pages.length} public pages, crawlable HTML and metadata.`);
+console.log(`SEO verified: ${config.name}, ${config.pages.length} public URLs, sitemap and metadata; no injected SEO footer.`);
